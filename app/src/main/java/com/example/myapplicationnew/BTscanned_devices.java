@@ -79,7 +79,8 @@ public class BTscanned_devices extends AppCompatActivity {
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                listView1.removeViewAt(i);
+                stringArrayList.remove(i);
+                arrayAdapter.notifyDataSetChanged();
 
             }
 
