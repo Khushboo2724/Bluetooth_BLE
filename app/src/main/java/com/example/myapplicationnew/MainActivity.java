@@ -5,26 +5,47 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Main Activity";
-    private int STORAGE_EXTERNAL_CODE = 1;
+    private int BT_resc_code = 100;
+    private int ADV_resc_code = 200;
+    private int sacn_resc_code = 300;
+
+    ListView listView;
+    //public ArrayList<BluetoothDevice> mDeviceList = new ArrayList<>();
     BluetoothAdapter btadapter;
     Button btnEnableDisableDiscoverable;
+    Button BT;
+    Button BLE;
+    BluetoothDevice btDevice;
+    //Button btnFindUnpairedDevices;
+    ListView listViewScan;
+    ArrayList<String> stringArrayList = new ArrayList<String>();
+    ArrayAdapter<String> arrayAdapter;
+
+    //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
     private final BroadcastReceiver mbroadcastrecv = new BroadcastReceiver() {
@@ -54,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     };
+
     private final BroadcastReceiver mbroadcastrecvEnable2 = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -85,14 +107,32 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
+//    BroadcastReceiver mbroadcastrecvScaned = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
+//            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+//                Log.d(TAG, "Inside IF CONDITION TO SHOW THE BLUETOOTH DEVICES");
+//                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+//                }
+//                stringArrayList.add(device.getName());
+//                arrayAdapter.notifyDataSetChanged();
+//            }
+//
+//        }
+//    };
 
-    @Override
-    protected void onDestroy() {
-        Log.d(TAG, "ON DESTROY called");
-        super.onDestroy();
-        unregisterReceiver(mbroadcastrecv);
-    }
 
+//    @Override
+//    protected void onDestroy() {
+//        Log.d(TAG, "ON DESTROY called");
+//        super.onDestroy();
+//        unregisterReceiver(mbroadcastrecv);
+//        unregisterReceiver(mbroadcastrecvEnable2);
+//    }
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,9 +140,25 @@ public class MainActivity extends AppCompatActivity {
 //        finding the bt button on the screen using id
         Button OnOff = (Button) findViewById(R.id.btnOnOff);
         Button EnableDisable = (Button) findViewById(R.id.btnEnableDisableDiscoverable);
+//        Button Discover = (Button) findViewById(R.id.btnFindUnpairedDevices);
+//        listView = (ListView) findViewById(R.id.lvNewDevices);
+        BT = (Button) findViewById(R.id.btnBT);
+        BLE=(Button) findViewById(R.id.btnBLE);
+        //listViewScan = (ListView) findViewById(R.id.lvScan);
+        //mDeviceList= new ArrayList<>();
 
 //      setting the recv as default
         btadapter = BluetoothAdapter.getDefaultAdapter();
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+
+
+                },0);
+
 
 //        inst after clicking the button
         OnOff.setOnClickListener(new View.OnClickListener() {
@@ -113,17 +169,98 @@ public class MainActivity extends AppCompatActivity {
                 enableDisable();
             }
         });
+        EnableDisable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick:discoverability");
+
+                setBtnEnableDisableDiscoverable();
+
+            }
+        });
+
+//        Discover.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d(TAG, "onClick:to show paired devices");
+//                getPaired();
+//            }
+//        });
+
+        BT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+//                }
+//                btadapter.startDiscovery();
+                Intent intent1=new Intent(MainActivity.this,BT_Devices.class);
+                startActivity(intent1);
+            }
+        });
+        //SCbt.onCreateView();
+//        IntentFilter ScanIntent =new IntentFilter(BluetoothDevice.ACTION_FOUND);
+//        registerReceiver(mbroadcastrecvScaned,ScanIntent);
+//
+//        arrayAdapter=new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1,stringArrayList);
+//        listViewScan.setAdapter(arrayAdapter);
+//        listViewScan.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //listViewScan.removeViewAt(i);
+//
+//            }
+//        });
+
+        BLE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2=new Intent(MainActivity.this,BLE_devices.class);
+                startActivity(intent2);
+            }
+        });
+
     }
+
+
+//    private void getPaired() {
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+//        }
+//        Set<BluetoothDevice> btPair = btadapter.getBondedDevices();
+//        String[] strings = new String[btPair.size()];
+//        int index = 0;
+//
+//        if (btPair.size() > 0) {
+//            for (BluetoothDevice device : btPair) {
+//                strings[index] = device.getName();
+//                index++;
+//            }
+//            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, strings);
+//            listView.setAdapter(arrayAdapter);
+//        }
+
+    //}
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == STORAGE_EXTERNAL_CODE) {
+        if (requestCode == BT_resc_code) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show();
-            } else {
                 Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == ADV_resc_code) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == sacn_resc_code) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -137,34 +274,13 @@ public class MainActivity extends AppCompatActivity {
         if (!btadapter.isEnabled()) {
 
             Log.d(TAG, "enabling bt");
+
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.BLUETOOTH_CONNECT)) {
-                    new AlertDialog.Builder(this)
-                            .setTitle("Permission needed")
-                            .setMessage("This permission is needed because to see the devices")
-                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.BLUETOOTH_ADMIN}, STORAGE_EXTERNAL_CODE);
-                                }
-                            })
-                            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            }).create().show();
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH_ADMIN}, STORAGE_EXTERNAL_CODE);
-                }
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //public void onRequestPermissionsResult(1, String[] {Manifest.permission.BLUETOOTH_ADMIN},
-                //);
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+//
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.BLUETOOTH_CONNECT},
+                        BT_resc_code);
 
             }
             Intent BTenableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -184,25 +300,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setBtnEnableDisableDiscoverable(View view) {
+
+    public void setBtnEnableDisableDiscoverable() {
         Log.d(TAG, "btnEnableDisable_Discoverable: Making device discoverable for 300 sec");
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADVERTISE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.BLUETOOTH_ADVERTISE},
+                    ADV_resc_code);
         }
         startActivity(discoverableIntent);
 
-        IntentFilter intentFilter=new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
-        registerReceiver(mbroadcastrecvEnable2,intentFilter);
+        IntentFilter intentFilter = new IntentFilter(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+        registerReceiver(mbroadcastrecvEnable2, intentFilter);
+
 
     }
-
 }
+

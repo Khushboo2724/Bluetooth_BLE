@@ -6,42 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Hello World!"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <LinearLayout
 
-   <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:accessibilityPaneTitle="@android:string/untitled"
-       tools:ignore="MissingConstraints" />
-
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
     <Button
-        android:text="On/Off"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        tools:layout_editor_absoluteX="60dp"
-        tools:layout_editor_absoluteY="165dp"
         android:id="@+id/btnOnOff"
-        tools:ignore="MissingConstraints" />
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="201dp"
+        android:text="On/Off"
+        android:visibility="visible"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="165dp"
-        android:id="@+id/btnEnableDisableDiscoverable"
-        android:onClick="btnEnableDisableDiscoverable"
-        android:layout_alignParentTop="true"
-        android:text="Enable Discovery"
-        tools:ignore="MissingConstraints" />
+        tools:visibility="visible" />
 
+        <Button
+            android:id="@+id/btnEnableDisableDiscoverable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enable Discovery"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="174dp"
+            tools:layout_editor_absoluteY="281dp" />
 
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/btnFindUnpairedDevices"-->
+<!--            android:text="Paired BT Devices "-->
+<!--            android:onClick="btnPair"/>-->
+
+<!--        <ListView-->
+<!--            android:layout_below="@id/btnFindUnpairedDevices"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:id="@+id/lvNewDevices"/>-->
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bluetooth"
+            android:id="@+id/btnBT"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BLE"
+            android:id="@+id/btnBLE"/>
+
+<!--        <fragment-->
+<!--            android:layout_below="@id/btnBTScan"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:id="@+id/lvScan"/>-->
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

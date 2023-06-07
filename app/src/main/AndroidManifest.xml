@@ -2,36 +2,37 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-feature android:name="android.hardware.bluetooth" android:required="true"/>
-    <!--    this is for ble-->
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
-    <!-- Request legacy Bluetooth permissions on older devices. -->
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" /> <!-- this is for ble -->
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" /> <!-- Request legacy Bluetooth permissions on older devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
-    <!-- Needed only if your app looks for Bluetooth devices.
+    <!--
+ Needed only if your app looks for Bluetooth devices.
          If your app doesn't use Bluetooth scan results to derive physical
          location information, you can strongly assert that your app
-         doesn't derive physical location. -->
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"   />
+         doesn't derive physical location.
+    -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-
-    <!-- Needed only if your app makes the device discoverable to Bluetooth
-         devices. -->
+    <!--
+ Needed only if your app makes the device discoverable to Bluetooth
+         devices.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-
-    <!-- Needed only if your app communicates with already-paired Bluetooth
-         devices. -->
+    <!--
+ Needed only if your app communicates with already-paired Bluetooth
+         devices.
+    -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_PRIVILEGED"
         tools:ignore="ProtectedPermissions" />
-
-
-
-    <!--    specifies which hardware my app is using and whether or not it is required this is normal BT-->
-
-
 
     <application
         android:allowBackup="true"
@@ -43,6 +44,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplicationNew"
         tools:targetApi="31">
+        <activity
+            android:name=".BTscanned_devices"
+            android:exported="false"
+            android:parentActivityName=".BT_Devices">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".BLE_devices"
+            android:exported="false"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".BT_Devices"
+            android:parentActivityName=".MainActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

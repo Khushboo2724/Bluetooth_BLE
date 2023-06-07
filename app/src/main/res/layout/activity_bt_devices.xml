@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context=".BT_Devices">
+
+
+
+
+
+
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/pairedFrag"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="0.5"-->
+<!--        android:below="@+id/btnPairBT"-->
+<!--        android:name="com.example.myapplicationnew.PairedDevices"/>-->
+
+
+    <Button
+        android:id="@+id/btnScanBT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scan"
+        android:layout_marginStart="@android:dimen/thumbnail_width"
+        />
+    <Button
+        android:id="@+id/btnPairBT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@android:dimen/thumbnail_width"
+        android:text="Pair" />
+
+    <ListView
+        android:id="@+id/lvNewDevices"
+        android:layout_width="242dp"
+        android:layout_height="261dp"
+        android:layout_below="@id/btnPairBT"
+        android:layout_marginLeft="@android:dimen/notification_large_icon_width" />
+
+    <!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/scannedFrag"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="0.5"-->
+<!--        android:below="@+id/btnScanBT"-->
+<!--        android:name="com.example.myapplicationnew.ScannedDevices"/>-->
+
+
+
+</LinearLayout>
