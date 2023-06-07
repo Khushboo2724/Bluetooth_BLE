@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -76,14 +78,30 @@ public class BTscanned_devices extends AppCompatActivity {
 
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, stringArrayList);
         listView1.setAdapter(arrayAdapter);
-        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                stringArrayList.remove(i);
-                arrayAdapter.notifyDataSetChanged();
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                new AlertDialog.Builder(BTscanned_devices.this)
+                        .setTitle("Do you want to remove "+stringArrayList.get(i)+"from list?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        stringArrayList.remove(i);
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+
+                            }
+                        }).create().show();
+
+
+
+                return false;
             }
-
         });
     }
 }
