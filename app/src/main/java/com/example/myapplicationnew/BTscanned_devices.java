@@ -69,7 +69,7 @@ public class BTscanned_devices extends AppCompatActivity {
                         Manifest.permission.ACCESS_BACKGROUND_LOCATION
 
 
-                },0);
+                }, 0);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
         }
         btadapter1.startDiscovery();
@@ -78,30 +78,6 @@ public class BTscanned_devices extends AppCompatActivity {
 
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, stringArrayList);
         listView1.setAdapter(arrayAdapter);
-        listView1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                new AlertDialog.Builder(BTscanned_devices.this)
-                        .setTitle("Do you want to remove "+stringArrayList.get(i)+"from list?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        stringArrayList.remove(i);
-                        arrayAdapter.notifyDataSetChanged();
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-
-                            }
-                        }).create().show();
-
-
-
-                return false;
-            }
-        });
     }
 }
