@@ -1,5 +1,7 @@
 package com.example.myapplicationnew;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -17,18 +19,26 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 public class BLE_devices extends AppCompatActivity {
-    Button Pair1;
     Button Scan1;
     BluetoothAdapter bluetoothAdapter;
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 10000;
     //BluetoothLeScanner bluetoothLeScanner;
     //BluetoothDevice device;
-    ArrayList<BluetoothDevice> stringArrayList = new ArrayList<BluetoothDevice>();
+    ListView listview2;
+    ArrayList<String> stringArrayList = new ArrayList<String>();
+
+
+
+
     ArrayAdapter<String> arrayAdapter;
 
 
@@ -44,8 +54,12 @@ public class BLE_devices extends AppCompatActivity {
                 @Override
                 public void onScanResult(int callbackType, ScanResult result) {
                     super.onScanResult(callbackType, result);
-                    stringArrayList.add(result.getDevice());
-                    arrayAdapter.notifyDataSetChanged();
+                    stringArrayList.add((result.getDevice()).toString());
+
+                        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,stringArrayList);
+                        listview2.setAdapter(arrayAdapter);
+
+                   // arrayAdapter.notifyDataSetChanged();
                 }
             };
 
@@ -64,7 +78,7 @@ public class BLE_devices extends AppCompatActivity {
                 new String[]{
                         android.Manifest.permission.ACCESS_FINE_LOCATION,
                         android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        //Manifest.permission.ACCESS_BACKGROUND_LOCATION
 
 
                 },0);
@@ -72,6 +86,7 @@ public class BLE_devices extends AppCompatActivity {
 
         Scan1 = (Button) findViewById(R.id.btnScanBLE);
         //Pair1=(Button) findViewById(R.id.btnPairBLE);
+        listview2=(ListView) findViewById(R.id.LV2);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
 
@@ -99,6 +114,7 @@ public class BLE_devices extends AppCompatActivity {
             if (ActivityCompat.checkSelfPermission(BLE_devices.this, android.Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
             }
             bluetoothLeScanner.startScan(leScanCallback);
+
         } else {
             scanning = false;
             bluetoothLeScanner.stopScan(leScanCallback);
